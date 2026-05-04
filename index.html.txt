@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Story</title>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.chat-box {
+    width:350px;
+    max-width:90%;
+    background:#020617;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+}
+
+.msg {
+    margin:6px 0;
+    padding:10px 14px;
+    border-radius:12px;
+    max-width:80%;
+    font-size:14px;
+    line-height:1.4;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeIn 0.4s forwards;
+}
+
+.left {
+    background:#1e293b;
+    color:white;
+}
+
+.right {
+    background:#22c55e;
+    color:black;
+    margin-left:auto;
+}
+
+.image {
+    width:100%;
+    border-radius:12px;
+    margin-top:8px;
+}
+
+.btn {
+    display:none;
+    width:100%;
+    text-align:center;
+    background:#22c55e;
+    color:black;
+    font-weight:bold;
+    padding:14px;
+    border-radius:12px;
+    margin-top:20px;
+    text-decoration:none;
+    font-size:16px;
+    animation:fadeIn 0.5s forwards;
+}
+
+.typing {
+    width:60px;
+    height:30px;
+    background:#1e293b;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:6px 0;
+}
+
+.dot {
+    width:6px;
+    height:6px;
+    background:#94a3b8;
+    border-radius:50%;
+    margin:0 2px;
+    animation:blink 1.4s infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay:0.2s;
+}
+.dot:nth-child(3) {
+    animation-delay:0.4s;
+}
+
+@keyframes blink {
+    0%, 80%, 100% { opacity:0.2; }
+    40% { opacity:1; }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.small {
+    font-size:12px;
+    opacity:0.6;
+    text-align:center;
+    margin-top:10px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-box" id="chat"></div>
+
+<script>
+const chat = document.getElementById("chat");
+
+function addMessage(text, side="left", isImage=false) {
+    const msg = document.createElement("div");
+    msg.className = "msg " + side;
+
+    if(isImage){
+        msg.innerHTML = text;
+    } else {
+        msg.innerText = text;
+    }
+
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping() {
+    const typing = document.createElement("div");
+    typing.className = "typing";
+    typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    chat.appendChild(typing);
+    chat.scrollTop = chat.scrollHeight;
+    return typing;
+}
+
+function removeTyping(el) {
+    chat.removeChild(el);
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function runChat() {
+
+    addMessage("bro try this", "left");
+    await delay(1000);
+
+    let t1 = showTyping();
+    await delay(1200);
+    removeTyping(t1);
+
+    addMessage("what is it?", "right");
+    await delay(1000);
+
+    addMessage("I used only 1500 TZS", "left");
+    await delay(1000);
+
+    let t2 = showTyping();
+    await delay(1200);
+    removeTyping(t2);
+
+    addMessage('look 😳<br><img src="win.jpg" class="image">', "left", true);
+    await delay(1200);
+
+    addMessage("is it real??", "right");
+    await delay(1000);
+
+    addMessage("yes bro, I withdraw with M-Pesa", "left");
+    await delay(1000);
+
+    // кнопка
+    const btn = document.createElement("a");
+    btn.href = "https://your-tracking-link.com";
+    btn.className = "btn";
+    btn.innerText = "Start with 1500 TZS";
+    chat.appendChild(btn);
+
+    setTimeout(() => {
+        btn.style.display = "block";
+    }, 300);
+
+    const small = document.createElement("div");
+    small.className = "small";
+    small.innerText = "Limited spots available today";
+    chat.appendChild(small);
+
+    setTimeout(() => {
+        small.style.display = "block";
+    }, 600);
+}
+
+runChat();
+</script>
+
+</body>
+</html>
